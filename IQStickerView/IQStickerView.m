@@ -102,6 +102,35 @@ static IQStickerView *lastTouchedView;
     self = [super initWithFrame:frame];
     if (self)
     {
+        [self.layer setShadowColor:[UIColor blackColor].CGColor];
+        [self.layer setShadowOffset:CGSizeMake(0, 5)];
+        [self.layer setShadowOpacity:1.0];
+        [self.layer setShadowRadius:4.0];
+  
+        /*
+         self.layer.borderColor = [UIColor whiteColor].CGColor;
+         self.layer.borderWidth = 10.;
+         
+         CGSize size = self.bounds.size;
+         CGFloat curlFactor = 15.0f;
+         CGFloat shadowDepth = 5.0f;
+         
+         self.layer.shadowColor = [UIColor blackColor].CGColor;
+         self.layer.shadowOpacity = 1.f;
+         self.layer.shadowOffset = CGSizeMake(.0f, 5.0f);
+         self.layer.shadowRadius = 5.0f;
+         self.layer.masksToBounds = NO;
+         
+         UIBezierPath *path = [UIBezierPath bezierPath];
+         [path moveToPoint:CGPointMake(0.0f, 0.0f)];
+         [path addLineToPoint:CGPointMake(size.width, 0.0f)];
+         [path addLineToPoint:CGPointMake(size.width, size.height + shadowDepth)];
+         [path addCurveToPoint:CGPointMake(0.0f, size.height + shadowDepth)
+         controlPoint1:CGPointMake(size.width - curlFactor, size.height + shadowDepth - curlFactor)
+         controlPoint2:CGPointMake(curlFactor, size.height + shadowDepth - curlFactor)];
+         self.layer.shadowPath = path.CGPath;
+         */
+        
         _globalInset = 12;
         
         //        self = [[UIView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];

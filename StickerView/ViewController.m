@@ -31,7 +31,9 @@
     
     /**/
     UIView *aView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    [aView setBackgroundColor:[UIColor greenColor]];
     [aView setClipsToBounds:YES];
+    
     UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 20, 120, 20)];
     [aLabel setAutoresizingMask:(UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin)];
     [aLabel setText:@"Sample Text"];
