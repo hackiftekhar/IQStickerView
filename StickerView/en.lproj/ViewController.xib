@@ -38,9 +38,10 @@
 					<object class="IBUIScrollView" id="725700174">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">282</int>
-						<string key="NSFrame">{{20, 204}, {280, 236}}</string>
+						<string key="NSFrame">{{0, 204}, {320, 256}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">2</int>
@@ -57,11 +58,8 @@
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="725700174"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MC43NQA</bytes>
-					<object class="NSColorSpace" key="NSCustomColorSpace">
-						<int key="NSID">2</int>
-					</object>
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MC45Nzk1OTE4MzY3IDAuMjg3MTg0MTk4NiAwLjM0MDM5MTY3ODcAA</bytes>
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>

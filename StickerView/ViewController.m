@@ -19,49 +19,54 @@
 {
     [super viewDidLoad];
     
-    IQStickerView *stickerView = [[IQStickerView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
-    
+    /**/
+    IQStickerView *stickerView = [[IQStickerView alloc] initWithFrame:CGRectMake(10, 10, 100, 100)];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sample1.jpeg"]];
     [imageView setContentMode:UIViewContentModeScaleAspectFit];
-    
     [stickerView setContentView:imageView];
     [self.view addSubview:stickerView];
+    /**/
     
     
     
-    UIView *aView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-
-    UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 50, 20)];
-    [aLabel setAutoresizingMask:(UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin)];
+    /**/
+    UIView *aView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    [aView setClipsToBounds:YES];
+    UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 20, 120, 20)];
+    [aLabel setAutoresizingMask:(UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin)];
     [aLabel setText:@"Sample Text"];
     [aView addSubview:aLabel];
     
     UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [aButton setAutoresizingMask:(UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin)];
+    [aButton setAutoresizingMask:(UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin)];
     [aButton setTitle:@"Sample Button" forState:UIControlStateNormal];
-    [aButton setFrame:CGRectMake(50, 50, 50, 30)];
+    [aButton setFrame:CGRectMake(30, 140, 120, 30)];
     [aView addSubview:aButton];
     
-    UIScrollView *scrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 80, 100, 20)];
+    UIScrollView *scrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 160, 200, 40)];
     [scrollview setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleHeight)];
     [scrollview setBackgroundColor:[UIColor greenColor]];
     [scrollview setContentSize:CGSizeMake(200, 200)];
     [aView addSubview:scrollview];
     
-    IQStickerView *stickerView1 = [[IQStickerView alloc] initWithFrame:CGRectMake(200, 50, 100, 100)];
+    IQStickerView *stickerView1 = [[IQStickerView alloc] initWithFrame:CGRectMake(120, 10, 180, 180)];
     [stickerView1 setContentView:aView];
     [self.view addSubview:stickerView1];
+    /**/
     
-     anView = [[UIView alloc] initWithFrame:scrollViewSample.bounds];
+    /**/
+    anView = [[UIView alloc] initWithFrame:scrollViewSample.bounds];
     [aView setUserInteractionEnabled:YES];
     [anView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight)];
     [scrollViewSample addSubview:anView];
     
-    IQStickerView *stickerView2 = [[IQStickerView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
+    IQStickerView *stickerView2 = [[IQStickerView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [stickerView2 setCenter:anView.center];
     UIImageView *imageView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sample2.jpeg"]];
     [imageView2 setContentMode:UIViewContentModeScaleAspectFit];
     [stickerView2 setContentView:imageView2];
     [anView addSubview:stickerView2];
+    /**/
     
 	// Do any additional setup after loading the view, typically from a nib.
 }
