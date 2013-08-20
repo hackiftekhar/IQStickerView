@@ -56,6 +56,7 @@ static IQStickerView *lastTouchedView;
     CGFloat deltaAngle;
     
     CGAffineTransform startTransform;
+    CGRect beginBounds;
 }
 
 -(void)refresh
@@ -94,11 +95,10 @@ static IQStickerView *lastTouchedView;
 
 - (id)initWithFrame:(CGRect)frame
 {
-//    if (CGRectIsEmpty(frame))
-//    {
-//
-//    }
-    
+    /*(1+_globalInset*2)*/
+    if (frame.size.width < (1+12*2))     frame.size.width = 25;
+    if (frame.size.height < (1+12*2))   frame.size.height = 25;
+ 
     self = [super initWithFrame:frame];
     if (self)
     {
@@ -140,7 +140,7 @@ static IQStickerView *lastTouchedView;
         closeView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _globalInset*2, _globalInset*2)];
         [closeView setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin)];
         closeView.backgroundColor = [UIColor clearColor];
-        closeView.image = [UIImage imageNamed:@"close_gold"];
+        closeView.image = [UIImage imageNamed:@"close"];
         closeView.userInteractionEnabled = YES;
         [self addSubview:closeView];
         
@@ -148,7 +148,7 @@ static IQStickerView *lastTouchedView;
         rotateView = [[UIImageView alloc]initWithFrame:CGRectMake(self.bounds.size.width-_globalInset*2, self.bounds.size.height-_globalInset*2, _globalInset*2, _globalInset*2)];
         [rotateView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin)];
         rotateView.backgroundColor = [UIColor clearColor];
-        rotateView.image = [UIImage imageNamed:@"rotate_scale_gold"];
+        rotateView.image = [UIImage imageNamed:@"rotate_scale"];
         rotateView.userInteractionEnabled = YES;
         [self addSubview:rotateView];
         
@@ -157,7 +157,7 @@ static IQStickerView *lastTouchedView;
         [resizeView setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin)];
         resizeView.backgroundColor = [UIColor clearColor];
         resizeView.userInteractionEnabled = YES;
-        resizeView.image = [UIImage imageNamed:@"resize_gold" ];
+        resizeView.image = [UIImage imageNamed:@"resize" ];
         [self addSubview:resizeView];
         
         UILongPressGestureRecognizer* moveGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(moveGesture:)];
@@ -295,6 +295,12 @@ static IQStickerView *lastTouchedView;
  
         [self setCenter:CGPointMake(beginningCenter.x+(touchLocation.x-beginningPoint.x), beginningCenter.y+(touchLocation.y-beginningPoint.y))];
 
+        beginBounds = self.bounds;
+        
+//        [UIView animateWithDuration:0.1 animations:^{
+//            [self setBounds:CGRectMake(0, 0, 100, 100)];
+//        }];
+        
         if([_delegate respondsToSelector:@selector(stickerViewDidBeginEditing:)])
             [_delegate stickerViewDidBeginEditing:self];
     }
@@ -310,6 +316,10 @@ static IQStickerView *lastTouchedView;
     {
         
         [self setCenter:CGPointMake(beginningCenter.x+(touchLocation.x-beginningPoint.x), beginningCenter.y+(touchLocation.y-beginningPoint.y))];
+        
+//        [UIView animateWithDuration:0.1 animations:^{
+//            [self setBounds:beginBounds];
+//        }];
         
         if([_delegate respondsToSelector:@selector(stickerViewDidEndEditing:)])
             [_delegate stickerViewDidEndEditing:self];
