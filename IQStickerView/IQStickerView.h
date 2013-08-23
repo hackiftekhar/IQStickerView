@@ -19,11 +19,14 @@
 }
 
 @property (assign, nonatomic) UIView *contentView;
-@property (strong, nonatomic) id <IQStickerViewDelegate> delegate;
+@property (weak, nonatomic) id <IQStickerViewDelegate> delegate;
+
+@property(nonatomic, assign) BOOL showContentShadow;    //Default is YES.
 @property(nonatomic, assign) BOOL enableClose;  // default is YES. if set to NO, user can't delete the view
 @property(nonatomic, assign) BOOL enableResize;  // default is YES. if set to NO, user can't Resize the view
 @property(nonatomic, assign) BOOL enableRotate;  // default is YES. if set to NO, user can't Rotate the view
 
+//Give call's to refresh. If SuperView is UIScrollView. And it changes it's zoom scale.
 -(void)refresh;
 
 - (void)hideEditingHandles;

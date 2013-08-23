@@ -13,6 +13,14 @@ CG_INLINE CGPoint CGRectGetCenter(CGRect rect)
     return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
 }
 
+CG_INLINE CGPoint CGPointRorate(CGPoint point, CGPoint basePoint, CGFloat angle)
+{
+    CGFloat x = cos(angle) * (point.x-basePoint.x) - sin(angle) * (point.y-basePoint.y) + basePoint.x;
+    CGFloat y = sin(angle) * (point.x-basePoint.x) + cos(angle) * (point.y-basePoint.y) + basePoint.y;
+    
+    return CGPointMake(x,y);
+}
+
 CG_INLINE CGRect CGRectSetCenter(CGRect rect, CGPoint center)
 {
     return CGRectMake(center.x-CGRectGetWidth(rect)/2, center.y-CGRectGetHeight(rect)/2, CGRectGetWidth(rect), CGRectGetHeight(rect));
@@ -31,6 +39,12 @@ CG_INLINE CGFloat CGPointGetDistance(CGPoint point1, CGPoint point2)
     
     return sqrt((fx*fx + fy*fy));
 }
+
+CG_INLINE CGFloat CGAffineTransformGetAngle(CGAffineTransform t)
+{
+    return atan2(t.b, t.a);
+}
+
 
 CG_INLINE CGSize CGAffineTransformGetScale(CGAffineTransform t)
 {
@@ -59,6 +73,13 @@ static IQStickerView *lastTouchedView;
     CGRect beginBounds;
 }
 
+@synthesize contentView = _contentView;
+@synthesize enableClose = _enableClose;
+@synthesize enableResize = _enableResize;
+@synthesize enableRotate = _enableRotate;
+@synthesize delegate = _delegate;
+@synthesize showContentShadow = _showContentShadow;
+
 -(void)refresh
 {
     if (self.superview)
@@ -86,13 +107,6 @@ static IQStickerView *lastTouchedView;
     [self refresh];
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-    return NO;
-}
-
-//New Code
-@synthesize contentView = _contentView;
-
 - (id)initWithFrame:(CGRect)frame
 {
     /*(1+_globalInset*2)*/
@@ -102,35 +116,6 @@ static IQStickerView *lastTouchedView;
     self = [super initWithFrame:frame];
     if (self)
     {
-        [self.layer setShadowColor:[UIColor blackColor].CGColor];
-        [self.layer setShadowOffset:CGSizeMake(0, 5)];
-        [self.layer setShadowOpacity:1.0];
-        [self.layer setShadowRadius:4.0];
-  
-        /*
-         self.layer.borderColor = [UIColor whiteColor].CGColor;
-         self.layer.borderWidth = 10.;
-         
-         CGSize size = self.bounds.size;
-         CGFloat curlFactor = 15.0f;
-         CGFloat shadowDepth = 5.0f;
-         
-         self.layer.shadowColor = [UIColor blackColor].CGColor;
-         self.layer.shadowOpacity = 1.f;
-         self.layer.shadowOffset = CGSizeMake(.0f, 5.0f);
-         self.layer.shadowRadius = 5.0f;
-         self.layer.masksToBounds = NO;
-         
-         UIBezierPath *path = [UIBezierPath bezierPath];
-         [path moveToPoint:CGPointMake(0.0f, 0.0f)];
-         [path addLineToPoint:CGPointMake(size.width, 0.0f)];
-         [path addLineToPoint:CGPointMake(size.width, size.height + shadowDepth)];
-         [path addCurveToPoint:CGPointMake(0.0f, size.height + shadowDepth)
-         controlPoint1:CGPointMake(size.width - curlFactor, size.height + shadowDepth - curlFactor)
-         controlPoint2:CGPointMake(curlFactor, size.height + shadowDepth - curlFactor)];
-         self.layer.shadowPath = path.CGPath;
-         */
-        
         _globalInset = 12;
         
         //        self = [[UIView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];
@@ -178,12 +163,12 @@ static IQStickerView *lastTouchedView;
         [panRotateGesture setMinimumPressDuration:0];
         [rotateView addGestureRecognizer:panRotateGesture];
         
-
-        [panRotateGesture requireGestureRecognizerToFail:panResizeGesture];
+        [moveGesture requireGestureRecognizerToFail:singleTap];
         
         [self setEnableClose:YES];
         [self setEnableResize:YES];
         [self setEnableRotate:YES];
+        [self setShowContentShadow:YES];
         
         [self hideEditingHandles];
      }
@@ -220,6 +205,26 @@ static IQStickerView *lastTouchedView;
     _enableRotate = enableRotate;
     [rotateView setHidden:!_enableRotate];
     [rotateView setUserInteractionEnabled:_enableRotate];
+}
+
+-(void)setShowContentShadow:(BOOL)showContentShadow
+{
+    _showContentShadow = showContentShadow;
+    
+    if (_showContentShadow)
+    {
+        [self.layer setShadowColor:[UIColor blackColor].CGColor];
+        [self.layer setShadowOffset:CGSizeMake(0, 5)];
+        [self.layer setShadowOpacity:1.0];
+        [self.layer setShadowRadius:4.0];
+    }
+    else
+    {
+        [self.layer setShadowColor:[UIColor clearColor].CGColor];
+        [self.layer setShadowOffset:CGSizeZero];
+        [self.layer setShadowOpacity:0.0];
+        [self.layer setShadowRadius:0.0];
+    }
 }
 
 - (void)hideEditingHandles
@@ -273,9 +278,6 @@ static IQStickerView *lastTouchedView;
 
 -(void)singleTap:(UITapGestureRecognizer *)recognizer
 {
-    NSLog(@"%@",recognizer.view);
-    NSLog(@"%d",(recognizer.view == closeView));
-    
     [self removeFromSuperview];
     
     if([_delegate respondsToSelector:@selector(stickerViewDidClose:)]) {
@@ -289,7 +291,7 @@ static IQStickerView *lastTouchedView;
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
-        [self showEditingHandles];
+//        [lastTouchedView hideEditingHandles];
         beginningPoint = touchLocation;
         beginningCenter = self.center;
  
@@ -331,7 +333,9 @@ static IQStickerView *lastTouchedView;
 -(void)resizeTranslate:(UIPanGestureRecognizer *)recognizer
 {
     touchLocation = [recognizer locationInView:self.superview];
-    
+    //Reforming touch location to it's Identity transform.
+    touchLocation = CGPointRorate(touchLocation, CGRectGetCenter(self.frame), -CGAffineTransformGetAngle(self.transform));
+ 
     if ([recognizer state]== UIGestureRecognizerStateBegan)
     {
         if([_delegate respondsToSelector:@selector(stickerViewDidBeginEditing:)])
@@ -372,7 +376,7 @@ static IQStickerView *lastTouchedView;
     
     if ([recognizer state] == UIGestureRecognizerStateBegan)
     {
-        deltaAngle = atan2(touchLocation.y-center.y, touchLocation.x-center.x);
+        deltaAngle = atan2(touchLocation.y-center.y, touchLocation.x-center.x)-CGAffineTransformGetAngle(self.transform);
         
         initialBounds = self.bounds;
         initialDistance = CGPointGetDistance(center, touchLocation);
@@ -385,6 +389,7 @@ static IQStickerView *lastTouchedView;
         float ang = atan2(touchLocation.y-center.y, touchLocation.x-center.x);
         
         float angleDiff = deltaAngle - ang;
+//        float angleDiff = -ang;
         [self setTransform:CGAffineTransformMakeRotation(-angleDiff)];
         [self setNeedsDisplay];
         
