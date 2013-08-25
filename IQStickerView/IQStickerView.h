@@ -1,9 +1,6 @@
 //
-//  ZDStickerView.h
-//
-//  Created by Seonghyun Kim on 5/29/13.
-//  Copyright (c) 2013 scipi. All rights reserved.
-//
+//  IQStickerView.h
+//  Created by Iftekhar Qurashi on 15/08/13.
 
 #import <UIKit/UIKit.h>
 
@@ -19,7 +16,7 @@
 }
 
 @property (assign, nonatomic) UIView *contentView;
-@property (weak, nonatomic) id <IQStickerViewDelegate> delegate;
+@property (unsafe_unretained) id <IQStickerViewDelegate> delegate;
 
 @property(nonatomic, assign) BOOL showContentShadow;    //Default is YES.
 @property(nonatomic, assign) BOOL enableClose;  // default is YES. if set to NO, user can't delete the view

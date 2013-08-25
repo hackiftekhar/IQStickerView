@@ -1,16 +1,14 @@
 //
 //  AppDelegate.m
-//  StickerView
-//
 //  Created by Iftekhar Mac Pro on 8/19/13.
-//  Copyright (c) 2013 Canopus. All rights reserved.
-//
 
 #import "AppDelegate.h"
 
 #import "ViewController.h"
 
 @implementation AppDelegate
+@synthesize window = _window;
+@synthesize viewController = _viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
