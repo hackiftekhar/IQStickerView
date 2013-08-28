@@ -13,4 +13,4 @@ Features:-
 
 ### Reference
 Inspired by [TDResizerView](https://github.com/Thavasidurai/TDResizerView).
-[ZDStickerView](https://github.com/zedoul/ZDStickerView) is also added a reference to [TDResizerView](https://github.com/Thavasidurai/TDResizerView). Please check README.md->References[here](https://github.com/zedoul/ZDStickerView.
+[ZDStickerView](https://github.com/zedoul/ZDStickerView) is also added a reference to [TDResizerView](https://github.com/Thavasidurai/TDResizerView). Please check README.md->References[here](https://github.com/zedoul/ZDStickerView).
